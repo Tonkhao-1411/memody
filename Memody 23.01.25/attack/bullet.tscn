@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cd5lvuvkybb6c"]
+
+[ext_resource type="Script" path="res://attack/bullet_code.gd" id="1_njeqn"]
+[ext_resource type="Texture2D" uid="uid://bmm2dlnw4e6u8" path="res://character/free-pixel-art-tiny-hero-sprites/1 Pink_Monster/Rock2.png" id="2_n8tub"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tquyg"]
+radius = 5.09902
+
+[node name="Rock_character" type="Area2D" node_paths=PackedStringArray("enemy")]
+scale = Vector2(2.93895, 2.93895)
+script = ExtResource("1_njeqn")
+enemy = [null, null, null]
+
+[node name="damage" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-1.19209e-07, -1.19209e-07)
+scale = Vector2(0.8125, 0.8125)
+texture = ExtResource("2_n8tub")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_tquyg")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

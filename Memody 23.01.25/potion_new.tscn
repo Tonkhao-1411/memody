@@ -1,0 +1,86 @@
+[gd_scene load_steps=16 format=3 uid="uid://bhe25iqf4vb2e"]
+
+[ext_resource type="Texture2D" uid="uid://dhyy66qj6ccv8" path="res://Item/Blue Potion/01.png" id="1_bycbj"]
+[ext_resource type="Script" path="res://potion_new.gd" id="1_ymg2j"]
+[ext_resource type="Texture2D" uid="uid://bpmm2ce1aww5r" path="res://Item/Blue Potion/02.png" id="2_5t4oj"]
+[ext_resource type="Texture2D" uid="uid://bu8glvwmlqwwa" path="res://Item/Blue Potion/03.png" id="3_isbqi"]
+[ext_resource type="Texture2D" uid="uid://gp75l7r1dv86" path="res://Item/Blue Potion/04.png" id="4_hew1u"]
+[ext_resource type="Texture2D" uid="uid://bydw8afqfgnn5" path="res://Item/Blue Potion/05.png" id="5_3qycu"]
+[ext_resource type="Texture2D" uid="uid://dvv50fgv1slxn" path="res://Item/Blue Potion/06.png" id="6_4mhek"]
+[ext_resource type="Texture2D" uid="uid://mpkfbmky1d74" path="res://Item/Blue Potion/07.png" id="7_sqkga"]
+[ext_resource type="Texture2D" uid="uid://3yetdh2ny2vp" path="res://Item/Potion Effect/01.png" id="8_g1uhv"]
+[ext_resource type="Texture2D" uid="uid://dvawjetrnmonb" path="res://Item/Potion Effect/02.png" id="9_7am2w"]
+[ext_resource type="Texture2D" uid="uid://dtdqnmjwr6bb0" path="res://Item/Potion Effect/03.png" id="10_7fhuv"]
+[ext_resource type="Texture2D" uid="uid://pxcvw7i6gy3d" path="res://Item/Potion Effect/04.png" id="11_xe68x"]
+[ext_resource type="AudioStream" uid="uid://cqub8s53s515m" path="res://90s-game-ui-10-185103.mp3" id="13_xvuu3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dmsjd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_bycbj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_5t4oj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_isbqi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_hew1u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_3qycu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4mhek")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_sqkga")
+}],
+"loop": true,
+"name": &"Idle_potion",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_g1uhv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7am2w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_7fhuv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_xe68x")
+}],
+"loop": true,
+"name": &"effect_potion",
+"speed": 7.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xe0ai"]
+radius = 5.0
+height = 28.0
+
+[node name="potion_new" type="Area2D"]
+scale = Vector2(2.26199, 2.26199)
+script = ExtResource("1_ymg2j")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2.26319, 2.26319)
+sprite_frames = SubResource("SpriteFrames_dmsjd")
+animation = &"Idle_potion"
+autoplay = "Idle_potion"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_xe0ai")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_xvuu3")
+volume_db = 5.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

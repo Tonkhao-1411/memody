@@ -1,0 +1,103 @@
+[gd_scene load_steps=15 format=3 uid="uid://bd6s4136ysves"]
+
+[ext_resource type="Texture2D" uid="uid://dhyy66qj6ccv8" path="res://Item/Blue Potion/01.png" id="2_jt887"]
+[ext_resource type="Texture2D" uid="uid://bpmm2ce1aww5r" path="res://Item/Blue Potion/02.png" id="3_v3k5c"]
+[ext_resource type="Texture2D" uid="uid://bu8glvwmlqwwa" path="res://Item/Blue Potion/03.png" id="4_dnl26"]
+[ext_resource type="Texture2D" uid="uid://gp75l7r1dv86" path="res://Item/Blue Potion/04.png" id="5_k5trl"]
+[ext_resource type="Texture2D" uid="uid://bydw8afqfgnn5" path="res://Item/Blue Potion/05.png" id="6_u6ljf"]
+[ext_resource type="Texture2D" uid="uid://dvv50fgv1slxn" path="res://Item/Blue Potion/06.png" id="7_w7sn0"]
+[ext_resource type="Texture2D" uid="uid://mpkfbmky1d74" path="res://Item/Blue Potion/07.png" id="8_ixyc3"]
+[ext_resource type="Texture2D" uid="uid://3yetdh2ny2vp" path="res://Item/Potion Effect/01.png" id="9_a57wk"]
+[ext_resource type="Texture2D" uid="uid://dvawjetrnmonb" path="res://Item/Potion Effect/02.png" id="10_rq5tb"]
+[ext_resource type="Texture2D" uid="uid://dtdqnmjwr6bb0" path="res://Item/Potion Effect/03.png" id="11_x52ui"]
+[ext_resource type="Texture2D" uid="uid://pxcvw7i6gy3d" path="res://Item/Potion Effect/04.png" id="12_rc2di"]
+
+[sub_resource type="GDScript" id="GDScript_7dvrv"]
+script/source = "extends Area2D
+
+@onready var game_manager = %GameManager
+
+func _ready():
+	print(\"GameManager: \", game_manager)
+	if game_manager:
+		print(\"GameManager exists!\")
+	else:
+		print(\"GameManager is NULL!\")
+
+func _on_body_entered(body):
+	if (body.name == \"CharacterBody2D\") :
+		%Sprite2D.play(\"potion_effect\")
+		await get_tree().create_timer(0.5).timeout
+		queue_free()
+		if game_manager:
+			game_manager.add_point()
+		else:
+			print(\"Error: GameManager is still NULL!\")
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oaghn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_jt887")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_v3k5c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_dnl26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_k5trl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_u6ljf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_w7sn0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ixyc3")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_a57wk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_rq5tb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_x52ui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_rc2di")
+}],
+"loop": true,
+"name": &"potion_effect",
+"speed": 7.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i2r7e"]
+radius = 2.0
+height = 14.0
+
+[node name="item" type="Area2D"]
+scale = Vector2(4.9627, 4.9627)
+script = SubResource("GDScript_7dvrv")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_oaghn")
+animation = &"Idle"
+autoplay = "Idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_i2r7e")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
